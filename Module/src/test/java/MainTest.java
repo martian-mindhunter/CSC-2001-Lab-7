@@ -22,6 +22,8 @@ class MainTest {
                     new BinaryTree<>(8, null, null))
     );
 
+    BinaryTree emptyTree = null;
+
     @Test
     void testEquals(){
         assertEquals(treeA, treeB);
@@ -47,16 +49,32 @@ class MainTest {
         BinaryTree nullTree = new BinaryTree<>(null, null, null);
         assertEquals(nullTree, BinaryTree.mirror(nullTree));
         assertEquals(null, BinaryTree.mirror(null));
+        assertEquals(treeA, BinaryTree.mirror(BinaryTree.mirror(treeA)));
     }
 
     @Test
     void testPreorder(){
         LinkedList<Integer> list = BinaryTree.preorder(treeA);
         System.out.println(list.stackPair);
-        assertEquals(list, new LinkedList<Integer>(new Pair(4,
-                new Pair(9, new Pair(8,new Pair(7,
-                        new Pair(1,new Pair(3,new Pair(2, null)))))))));
+        assertEquals(new LinkedList<>(new Pair(4,
+                new Pair(1, new Pair(2,new Pair(3,
+                        new Pair(9,new Pair(7,new Pair(8, null)))))))), list);
+        assertEquals(new LinkedList<>(), BinaryTree.preorder(emptyTree));
 
     }
+
+    @Test
+    void testFindPath(){
+        LinkedList<String> path = new LinkedList<>(new Pair("left", new Pair("right", new Pair("here", null))));
+        assertEquals(path, BinaryTree.findPath(treeA, 3));
+        path = new LinkedList<>(new Pair("right", new Pair("left", new Pair("here", null))));
+        assertEquals(path, BinaryTree.findPath(treeA, 7));
+        path = new LinkedList<>(new Pair("here", null));
+        assertEquals(path, BinaryTree.findPath(treeA, 4));
+        path = new LinkedList<>(new Pair("left", new Pair("left", new Pair("here", null))));
+        assertEquals(path, BinaryTree.findPath(treeA, 2));
+        assertEquals(null, BinaryTree.findPath(treeA, 333));
+    }
+
 
 }
